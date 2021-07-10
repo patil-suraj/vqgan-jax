@@ -105,5 +105,6 @@ def convert_model(config_path, pt_state_dict_path, save_path):
         state_dict[renamed_key] = state_dict.pop(key)
 
     state = convert_pytorch_state_dict_to_flax(state_dict, model)
-    model.params = unflatten_dict(state)
+    model.params = state
     model.save_pretrained(save_path)
+    return model
