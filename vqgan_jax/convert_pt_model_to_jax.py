@@ -50,17 +50,13 @@ def convert_pytorch_state_dict_to_flax(pt_state_dict, flax_model):
 
     # Correctly rename weight parameters
     if ("norm" in pt_key and (pt_tuple_key[-1] == "bias")
-        and (pt_tuple_key[:-1] + ("bias", ) in random_flax_state_dict)):
-      pt_tensor = pt_tensor[None, None, None, :]
-    elif ("norm" in pt_key and (pt_tuple_key[-1] == "bias")
+          and (pt_tuple_key[:-1] + ("bias", ) not in random_flax_state_dict)
           and (pt_tuple_key[:-1] + ("scale", ) in random_flax_state_dict)):
       pt_tuple_key = pt_tuple_key[:-1] + ("scale", )
-      pt_tensor = pt_tensor[None, None, None, :]
     elif pt_tuple_key[-1] in [
         "weight", "gamma"
     ] and pt_tuple_key[:-1] + ("scale", ) in random_flax_state_dict:
       pt_tuple_key = pt_tuple_key[:-1] + ("scale", )
-      pt_tensor = pt_tensor[None, None, None, :]
     if pt_tuple_key[-1] == "weight" and pt_tuple_key[:-1] + (
         "embedding", ) in random_flax_state_dict:
       pt_tuple_key = pt_tuple_key[:-1] + ("embedding", )
