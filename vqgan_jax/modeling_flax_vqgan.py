@@ -589,6 +589,7 @@ class VQGANPreTrainedModel(FlaxPreTrainedModel):
       input_shape: Tuple = (1, 256, 256, 3),
       seed: int = 0,
       dtype: jnp.dtype = jnp.float32,
+      _do_init: bool = True,
       **kwargs,
   ):
     module = self.module_class(config=config, dtype=dtype, **kwargs)
@@ -596,7 +597,8 @@ class VQGANPreTrainedModel(FlaxPreTrainedModel):
                      module,
                      input_shape=input_shape,
                      seed=seed,
-                     dtype=dtype)
+                     dtype=dtype,
+                     _do_init=_do_init)
 
   def init_weights(self, rng: jax.random.PRNGKey,
                    input_shape: Tuple) -> FrozenDict:
